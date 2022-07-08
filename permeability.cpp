@@ -8,9 +8,6 @@ using namespace plb;
 
 typedef double T;
 
-// Smagorinsky constant for LES model.
-// const T cSmago = 0.14;
-
 const T rhoEmpty = T(1);
 const T rho = T(1325);
 
@@ -150,7 +147,6 @@ int main(int argc, char** argv)
     try {
         global::argv(1).read(fNameOut);
         global::directories().setOutputDir(fNameOut + "/");
-
         global::argv(2).read(nuPhys);
         global::argv(3).read(surfaceTensionPhys);
         global::argv(4).read(contactAngle);
@@ -169,11 +165,11 @@ int main(int argc, char** argv)
         pcout << "2. Kinematic viscosity in physical Units (m^2/s) of layer 1.\n";
         pcout << "3. Surface tension in physical units (N/m) of layer 1.\n";
         pcout << "4. Contact angle (in degrees) of layer 1.\n";
-        pcout << "8. Number of lattice nodes for lz (suggestion: 1000).\n";
-        pcout << "9. delta_t (suggestion: 1.e-8).\n";
-        pcout << "10. Maximum Iteration cycle.\n";
-        pcout << "11. nx nz ny.\n";
-        pcout << "12. Name of geometry input data.\n";
+        pcout << "5. Number of lattice nodes for lz (suggestion: 1000).\n";
+        pcout << "6. delta_t (suggestion: 1.e-8).\n";
+        pcout << "7. Maximum Iteration cycle.\n";
+        pcout << "8. nx nz ny.\n";
+        pcout << "9. Name of geometry input data.\n";
         pcout << "Reasonable parameters on a parallel machine are: " << (std::string)global::argv(0) << " tmp 1.01e-6 0.0728 150.0 1000 1.e-8 80000 501(x) 501(z) 501(y) Raw Data.dat\n";
         exit(EXIT_FAILURE);
     }
@@ -218,9 +214,7 @@ int main(int argc, char** argv)
     pcout << "Time spent for setting up lattices: "
         << global::timer("initialization").stop() << std::endl;
     T lastIterationTime = T();
-
-    T tmp_mass = T(); //def a temporary number
-    tmp_mass = 0;
+    T tmp_mass = T();
 
     for (plint iT = 0; iT <= maxIter; ++iT) {
         global::timer("iteration").restart();
@@ -269,7 +263,6 @@ int main(int argc, char** argv)
         }else{
             tmp_mass = sum_of_mass_matrix + lost_mass;
         }
-
 
     }
 
